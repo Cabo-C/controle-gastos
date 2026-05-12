@@ -56,7 +56,7 @@ def obter_cotacao_dolar():
         dados = resposta.json()
         cotacao = float(dados["USDBRL"]["bid"])
         return cotacao
-    except:
+    except Exception:
         return None
 
 if __name__ == "__main__":
