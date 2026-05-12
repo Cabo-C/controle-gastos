@@ -1,3 +1,4 @@
+import requests
 gastos = []
 
 def adicionar_gasto(valor, descricao):
@@ -34,10 +35,29 @@ def menu():
                 print(f"{g['descricao']} - R${g['valor']}")
 
         elif opcao == "3":
-            print(f"Total: R${total_gastos()}")
+            total = total_gastos()
+            cotacao = obter_cotacao_dolar()
+
+            print(f"Total: R${total}")
+
+            if cotacao:
+                total_dolar = total / cotacao
+                print(f"Total em dólar: ${total_dolar:.2f}")
+            else:
+                print("Não foi possível obter cotação do dólar")
 
         elif opcao == "4":
             break
+
+def obter_cotacao_dolar():
+    try:
+        url = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
+        resposta = requests.get(url)
+        dados = resposta.json()
+        cotacao = float(dados["USDBRL"]["bid"])
+        return cotacao
+    except:
+        return None
 
 if __name__ == "__main__":
     menu()
